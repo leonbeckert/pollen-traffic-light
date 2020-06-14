@@ -1,0 +1,82 @@
+// Define Pins
+#define BLUE_LED 9
+#define RED_LED 10
+#define YELLOW_LED 11
+#define GREEN_LED 12
+
+void setup()
+{
+  Serial.begin(9600);
+pinMode(BLUE_LED, OUTPUT);
+pinMode(RED_LED, OUTPUT);
+pinMode(YELLOW_LED, OUTPUT);
+pinMode(GREEN_LED, OUTPUT);
+digitalWrite(BLUE_LED, LOW);
+digitalWrite(RED_LED, LOW);
+digitalWrite(YELLOW_LED, LOW);
+digitalWrite(GREEN_LED, LOW);
+}
+
+// define variables
+int redValue;
+int greenValue;
+int blueValue;
+int yellowValue;
+int serialData = 0;
+int delayTime = 1000;
+int i = 0;
+
+// main loop
+void loop()
+{
+  if (Serial.available() > 0)
+  {
+    //Arduino reads the Serial Monitor (Tools -> Serial Monitor) 
+    //returns read value in ASCII
+    serialData = Serial.read();
+    Serial.println(serialData);
+    if(serialData == 49) //1
+    {
+      redValue = 0;
+      greenValue = 255;
+      blueValue = 0;
+      yellowValue = 0;
+    } 
+    if (serialData == 50) //2
+    {
+      redValue = 0;
+      greenValue = 0;
+      blueValue = 0;
+      yellowValue = 255;
+    }
+    if (serialData == 51) //3
+    {
+      redValue = 255;
+      greenValue = 0;
+      blueValue = 0;
+      yellowValue = 0;
+    }
+    if (serialData == 48) //3
+    {
+      redValue = 0;
+      greenValue = 0;
+      blueValue = 0;
+      yellowValue = 0;
+    }
+  } else {
+    if(i > 4)
+    {
+    redValue = 0;
+    greenValue = 0;
+    blueValue = 255;
+    i = 0;
+    }
+    i++;
+    delay(1000);
+  }
+  analogWrite(BLUE_LED, blueValue);
+  analogWrite(RED_LED, redValue);
+  analogWrite(YELLOW_LED, yellowValue);
+  analogWrite(GREEN_LED, greenValue);
+  delay(delayTime);
+}
